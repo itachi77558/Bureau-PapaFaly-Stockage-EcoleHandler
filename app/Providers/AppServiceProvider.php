@@ -48,7 +48,7 @@ class AppServiceProvider extends ServiceProvider
         return new UserService(
             $app->make(UserRepository::class),
             $app->make(CloudinaryService::class),
-            $auth,
+            $auth,   
             $firestore,
             $storage
         );
