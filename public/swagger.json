@@ -1,0 +1,1149 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Handler Enseignement",
+        "version": "1.0.0",
+        "description": "API pour gérer les dettes des clients dans un magasin"
+    },
+    "paths": {
+        "api/user": {
+            "get": {
+                "summary": "Obtenir les informations de l'utilisateur authentifié",
+                "operationId": "getUser",
+                "tags": ["User"],
+                "responses": {
+                    "200": {
+                        "description": "Informations de l'utilisateur",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/test-firebase": {
+            "get": {
+                "summary": "Tester la connexion à Firebase",
+                "operationId": "testFirebase",
+                "tags": ["Firebase"],
+                "responses": {
+                    "200": {
+                        "description": "Connexion à Firebase réussie",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "timestamp": {
+                                                    "type": "integer"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur de connexion à Firebase",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user": {
+            "post": {
+                "summary": "Créer un nouvel utilisateur",
+                "operationId": "createUser",
+                "tags": ["User"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Utilisateur créé avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "summary": "Connexion de l'utilisateur",
+                "operationId": "loginUser",
+                "tags": ["Auth"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Connexion réussie",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoginResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "summary": "Déconnexion de l'utilisateur",
+                "operationId": "logoutUser",
+                "tags": ["Auth"],
+                "responses": {
+                    "200": {
+                        "description": "Déconnexion réussie"
+                    }
+                }
+            }
+        },
+        "/api/change-password": {
+            "post": {
+                "summary": "Changer le mot de passe de l'utilisateur",
+                "operationId": "changePassword",
+                "tags": ["User"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChangePasswordRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Mot de passe changé avec succès"
+                    }
+                }
+            }
+        },
+        "/api/v1/users/{id}": {
+            "patch": {
+                "summary": "Mettre à jour un utilisateur",
+                "operationId": "updateUser",
+                "tags": ["User"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Utilisateur mis à jour avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/users": {
+            "get": {
+                "summary": "Obtenir la liste des utilisateurs",
+                "operationId": "getUsers",
+                "tags": ["User"],
+                "responses": {
+                    "200": {
+                        "description": "Liste des utilisateurs",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/User"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/apprenants": {
+            "post": {
+                "summary": "Créer un nouvel apprenant",
+                "operationId": "createApprenant",
+                "tags": ["Apprenant"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Apprenant"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Apprenant créé avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Apprenant"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/apprenants/import": {
+            "post": {
+                "summary": "Importer des apprenants",
+                "operationId": "importApprenants",
+                "tags": ["Apprenant"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ImportApprenantsRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Apprenants importés avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/apprenants": {
+            "get": {
+                "summary": "Obtenir la liste des apprenants de la promotion active",
+                "operationId": "getApprenantsFromActivePromotion",
+                "tags": ["Apprenant"],
+                "responses": {
+                    "200": {
+                        "description": "Liste des apprenants",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Apprenant"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/referentiels": {
+            "get": {
+                "summary": "Obtenir la liste des référentiels",
+                "operationId": "getReferentiels",
+                "tags": ["Referentiel"],
+                "responses": {
+                    "200": {
+                        "description": "Liste des référentiels",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Referentiel"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "summary": "Créer un nouveau référentiel",
+                "operationId": "createReferentiel",
+                "tags": ["Referentiel"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Referentiel"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Référentiel créé avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Referentiel"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/referentiels/{id}": {
+            "get": {
+                "summary": "Obtenir un référentiel par ID",
+                "operationId": "getReferentielById",
+                "tags": ["Referentiel"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Référentiel",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Referentiel"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "summary": "Mettre à jour un référentiel",
+                "operationId": "updateReferentiel",
+                "tags": ["Referentiel"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Referentiel"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Référentiel mis à jour avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Referentiel"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "summary": "Supprimer un référentiel",
+                "operationId": "deleteReferentiel",
+                "tags": ["Referentiel"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Référentiel supprimé avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/referentiels/{id}/modules": {
+            "get": {
+                "summary": "Obtenir les modules d'un référentiel",
+                "operationId": "listModules",
+                "tags": ["Referentiel"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Liste des modules",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Module"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/referentiels/{id}/competences": {
+            "post": {
+                "summary": "Ajouter une compétence à un référentiel",
+                "operationId": "addCompetence",
+                "tags": ["Referentiel"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Competence"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Compétence ajoutée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Competence"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/archive/referentiels": {
+            "get": {
+                "summary": "Obtenir les référentiels archivés",
+                "operationId": "getArchivedReferentiels",
+                "tags": ["Referentiel"],
+                "responses": {
+                    "200": {
+                        "description": "Liste des référentiels archivés",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Referentiel"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/promotions": {
+            "get": {
+                "summary": "Obtenir la liste des promotions",
+                "operationId": "getPromotions",
+                "tags": ["Promotion"],
+                "responses": {
+                    "200": {
+                        "description": "Liste des promotions",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Promotion"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "summary": "Créer une nouvelle promotion",
+                "operationId": "createPromotion",
+                "tags": ["Promotion"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Promotion"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Promotion créée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Promotion"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/promotions/{id}": {
+            "get": {
+                "summary": "Obtenir une promotion par ID",
+                "operationId": "getPromotionById",
+                "tags": ["Promotion"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Promotion",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Promotion"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "patch": {
+                "summary": "Mettre à jour une promotion",
+                "operationId": "updatePromotion",
+                "tags": ["Promotion"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Promotion"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Promotion mise à jour avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Promotion"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "summary": "Supprimer une promotion",
+                "operationId": "deletePromotion",
+                "tags": ["Promotion"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Promotion supprimée avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/promotions/{id}/referentiels": {
+            "patch": {
+                "summary": "Mettre à jour les référentiels d'une promotion",
+                "operationId": "updatePromotionReferentiels",
+                "tags": ["Promotion"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdatePromotionReferentielsRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Référentiels de la promotion mis à jour avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/promotions/{id}/etat": {
+            "patch": {
+                "summary": "Mettre à jour l'état d'une promotion",
+                "operationId": "updatePromotionStatus",
+                "tags": ["Promotion"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdatePromotionStatusRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "État de la promotion mis à jour avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/promotions": {
+            "get": {
+                "summary": "Obtenir la liste des promotions",
+                "operationId": "getPromotionsV1",
+                "tags": ["Promotion"],
+                "responses": {
+                    "200": {
+                        "description": "Liste des promotions",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Promotion"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/promotions/encour": {
+            "get": {
+                "summary": "Obtenir les promotions en cours",
+                "operationId": "getPromotionsActive",
+                "tags": ["Promotion"],
+                "responses": {
+                    "200": {
+                        "description": "Liste des promotions en cours",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Promotion"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/apprenants/{id}": {
+            "get": {
+                "summary": "Obtenir un apprenant par ID",
+                "operationId": "getApprenantById",
+                "tags": ["Apprenant"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Apprenant",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Apprenant"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/apprenants/inactive": {
+            "get": {
+                "summary": "Obtenir les apprenants inactifs de la promotion active",
+                "operationId": "getInactiveApprenantsFromActivePromotion",
+                "tags": ["Apprenant"],
+                "responses": {
+                    "200": {
+                        "description": "Liste des apprenants inactifs",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Apprenant"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/apprenants/filter-by-referentiel/{referentielId}": {
+            "get": {
+                "summary": "Filtrer les apprenants par référentiel",
+                "operationId": "filterApprenantsByReferentiel",
+                "tags": ["Apprenant"],
+                "parameters": [
+                    {
+                        "name": "referentielId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Liste des apprenants filtrés par référentiel",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Apprenant"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "User": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                }
+            },
+            "LoginRequest": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                }
+            },
+            "LoginResponse": {
+                "type": "object",
+                "properties": {
+                    "token": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ChangePasswordRequest": {
+                "type": "object",
+                "properties": {
+                    "oldPassword": {
+                        "type": "string"
+                    },
+                    "newPassword": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Apprenant": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "promotionId": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ImportApprenantsRequest": {
+                "type": "object",
+                "properties": {
+                    "apprenants": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Apprenant"
+                        }
+                    }
+                }
+            },
+            "Referentiel": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Module": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Competence": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Promotion": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "referentielId": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    }
+                }
+            },
+            "UpdatePromotionReferentielsRequest": {
+                "type": "object",
+                "properties": {
+                    "referentielIds": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "UpdatePromotionStatusRequest": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}
