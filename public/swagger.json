@@ -6,10 +6,11 @@
         "description": "API pour gérer les dettes des clients dans un magasin"
     },
     "paths": {
-        "/api/users": {
+        "/api/v1/users": {
             "get": {
                 "summary": "Obtenir les informations de l'utilisateur authentifié",
                 "operationId": "getUser",
+
                 "tags": ["User"],
                 "responses": {
                     "200": {
