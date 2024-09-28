@@ -33,16 +33,6 @@ COPY . .
 # Installation des dépendances PHP avec Composer
 RUN composer install --no-dev --optimize-autoloader
 
-
-# Copier le script de création du client personnel
-COPY create_personal_client.sh /home/pfdev/Bureau/PapaFaly/Stockage/EcoleHandler/create_personal_client.sh
-
-# Rendre le script exécutable
-RUN chmod +x /home/pfdev/Bureau/PapaFaly/Stockage/EcoleHandler/create_personal_client.sh
-
-# Exécuter le script de création du client personnel
-RUN /home/pfdev/Bureau/PapaFaly/Stockage/EcoleHandler/create_personal_client.sh
-
 # Ajuster les permissions des fichiers
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html/storage \
