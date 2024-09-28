@@ -979,171 +979,185 @@
             }
         }
     },
-    "components": {
-        "schemas": {
-            "User": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "string"
+        "components": {
+            "schemas": {
+                "User": {
+                    "type": "object",
+                    "properties": {
+                        "prenom": {
+                            "type": "string",
+                            "maxLength": 255
                     },
-                    "name": {
-                        "type": "string"
-                    },
-                    "email": {
-                        "type": "string"
-                    },
-                    "password": {
-                        "type": "string"
-                    }
-                }
-            },
-            "LoginRequest": {
-                "type": "object",
-                "properties": {
-                    "email": {
-                        "type": "string"
-                    },
-                    "password": {
-                        "type": "string"
-                    }
-                }
-            },
-            "LoginResponse": {
-                "type": "object",
-                "properties": {
-                    "token": {
-                        "type": "string"
-                    }
-                }
-            },
-            "ChangePasswordRequest": {
-                "type": "object",
-                "properties": {
-                    "oldPassword": {
-                        "type": "string"
-                    },
-                    "newPassword": {
-                        "type": "string"
-                    }
-                }
-            },
-            "Apprenant": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "string"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "email": {
-                        "type": "string"
-                    },
-                    "promotionId": {
-                        "type": "string"
-                    }
-                }
-            },
-            "ImportApprenantsRequest": {
-                "type": "object",
-                "properties": {
-                    "apprenants": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/Apprenant"
+                        "nom": {
+                            "type": "string",
+                            "maxLength": 255
+                        },
+                        "email": {
+                            "type": "string",
+                            "format": "email"
+                        },
+                        "image": {
+                            "type": "string",
+                            "format": "binary"
+                        },
+                        "password": {
+                            "type": "string",
+                            "minLength": 8
+                        },
+                        "role": {
+                            "type": "string",
+                            "enum": ["Admin", "Coach", "CM", "Apprenant"]
                         }
                     }
-                }
-            },
-            "Referentiel": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "string"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "description": {
-                        "type": "string"
+
+                    
+                },
+                "LoginRequest": {
+                    "type": "object",
+                    "properties": {
+                        "email": {
+                            "type": "string"
+                        },
+                        "password": {
+                            "type": "string"
+                        }
                     }
-                }
-            },
-            "Module": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "string"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "description": {
-                        "type": "string"
+                },
+                "LoginResponse": {
+                    "type": "object",
+                    "properties": {
+                        "token": {
+                            "type": "string"
+                        }
                     }
-                }
-            },
-            "Competence": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "string"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "description": {
-                        "type": "string"
+                },
+                "ChangePasswordRequest": {
+                    "type": "object",
+                    "properties": {
+                        "oldPassword": {
+                            "type": "string"
+                        },
+                        "newPassword": {
+                            "type": "string"
+                        }
                     }
-                }
-            },
-            "Promotion": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "string"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "description": {
-                        "type": "string"
-                    },
-                    "referentielId": {
-                        "type": "string"
-                    },
-                    "status": {
-                        "type": "string"
+                },
+                "Apprenant": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "email": {
+                            "type": "string"
+                        },
+                        "promotionId": {
+                            "type": "string"
+                        }
                     }
-                }
-            },
-            "UpdatePromotionReferentielsRequest": {
-                "type": "object",
-                "properties": {
-                    "referentielIds": {
-                        "type": "array",
-                        "items": {
+                },
+                "ImportApprenantsRequest": {
+                    "type": "object",
+                    "properties": {
+                        "apprenants": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/Apprenant"
+                            }
+                        }
+                    }
+                },
+                "Referentiel": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "Module": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "Competence": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "Promotion": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "referentielId": {
+                            "type": "string"
+                        },
+                        "status": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "UpdatePromotionReferentielsRequest": {
+                    "type": "object",
+                    "properties": {
+                        "referentielIds": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "UpdatePromotionStatusRequest": {
+                    "type": "object",
+                    "properties": {
+                        "status": {
                             "type": "string"
                         }
                     }
                 }
             },
-            "UpdatePromotionStatusRequest": {
-                "type": "object",
-                "properties": {
-                    "status": {
-                        "type": "string"
-                    }
+            "securitySchemes": {
+                "bearerAuth": {
+                    "type": "http",
+                    "scheme": "bearer",
+                    "bearerFormat": "JWT"
                 }
             }
-        },
-        "securitySchemes": {
-            "bearerAuth": {
-                "type": "http",
-                "scheme": "bearer",
-                "bearerFormat": "JWT"
-            }
         }
-    }
 }
