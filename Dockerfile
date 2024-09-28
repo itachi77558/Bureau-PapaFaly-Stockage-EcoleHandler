@@ -33,6 +33,16 @@ COPY . .
 # Installation des dépendances PHP avec Composer
 RUN composer install --no-dev --optimize-autoloader
 
+
+# Copier le script de création du client personnel
+COPY create_personal_client.sh /var/www/html/create_personal_client.sh
+
+# Rendre le script exécutable
+RUN chmod +x /var/www/html/create_personal_client.sh
+
+# Exécuter le script de création du client personnel
+RUN /var/www/html/create_personal_client.sh
+
 # Ajuster les permissions des fichiers
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html/storage \
