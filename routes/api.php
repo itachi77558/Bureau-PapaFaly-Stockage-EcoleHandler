@@ -60,7 +60,7 @@ Route::get('/test-firebase', function () {
 Route::post('/user', [UserController::class, 'store']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
-Route::post('/change-password', [UserController::class, 'changePassword']);
+Route::post('/change-password', action: [UserController::class, 'changePassword']);
 
 Route::middleware([config('app.auth_mode') === 'firebase' ? 'auth.firebase' : 'auth:api'])->group(function () {
     
