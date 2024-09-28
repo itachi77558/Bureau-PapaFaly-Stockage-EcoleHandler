@@ -1004,6 +1004,10 @@
                             "type": "string",
                             "minLength": 8
                         },
+                        "confirmation_password": {
+                            "type": "string",
+                            "minLength": 8
+                        },
                         "role": {
                             "type": "string",
                             "enum": ["Admin", "Coach", "CM", "Apprenant"]
