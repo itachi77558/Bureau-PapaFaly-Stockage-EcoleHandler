@@ -6,7 +6,7 @@
         "description": "API pour gérer les dettes des clients dans un magasin"
     },
     "paths": {
-        "/v1/api/users": {
+        "/api/users": {
             "get": {
                 "summary": "Obtenir les informations de l'utilisateur authentifié",
                 "operationId": "getUser",
