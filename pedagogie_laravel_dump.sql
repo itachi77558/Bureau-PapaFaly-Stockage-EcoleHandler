@@ -464,6 +464,9 @@ COPY public.oauth_auth_codes (id, user_id, client_id, scopes, revoked, expires_a
 --
 
 COPY public.oauth_clients (id, user_id, name, secret, provider, redirect, personal_access_client, password_client, revoked, created_at, updated_at) FROM stdin;
+1	\N	Laravel Personal Access Client	SX2fhSt6FGA9Zogxufc2rgUcC3NB0uu3qiLV8C7x	\N	http://localhost	t	f	f	2024-09-28 09:21:49	2024-09-28 09:21:49
+2	\N	Laravel Personal Access Client	NBteOB5aa84EuZh7fL1HFB87t9mfy9JXqc7JUUc1	\N	http://localhost	t	f	f	2024-09-28 16:08:33	2024-09-28 16:08:33
+3	\N	Laravel Password Grant Client	n6ODOg2k9tbhaL23pRWVT9arjtEunXp3lgVsCN86	users	http://localhost	f	t	f	2024-09-28 16:08:33	2024-09-28 16:08:33
 \.
 
 
@@ -472,6 +475,8 @@ COPY public.oauth_clients (id, user_id, name, secret, provider, redirect, person
 --
 
 COPY public.oauth_personal_access_clients (id, client_id, created_at, updated_at) FROM stdin;
+1	1	2024-09-28 09:21:49	2024-09-28 09:21:49
+2	2	2024-09-28 16:08:33	2024-09-28 16:08:33
 \.
 
 
@@ -532,14 +537,14 @@ SELECT pg_catalog.setval('public.migrations_id_seq', 10, true);
 -- Name: oauth_clients_id_seq; Type: SEQUENCE SET; Schema: public; Owner: nouvel_utilisateur
 --
 
-SELECT pg_catalog.setval('public.oauth_clients_id_seq', 1, false);
+SELECT pg_catalog.setval('public.oauth_clients_id_seq', 3, true);
 
 
 --
 -- Name: oauth_personal_access_clients_id_seq; Type: SEQUENCE SET; Schema: public; Owner: nouvel_utilisateur
 --
 
-SELECT pg_catalog.setval('public.oauth_personal_access_clients_id_seq', 1, false);
+SELECT pg_catalog.setval('public.oauth_personal_access_clients_id_seq', 2, true);
 
 
 --
