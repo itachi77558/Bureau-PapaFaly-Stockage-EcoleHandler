@@ -398,7 +398,7 @@
                 ]
             }
         },
-        "/v1/users": {
+        "/api/users": {
             "get": {
                 "summary": "Obtenir la liste des utilisateurs",
                 "operationId": "getUsers",
@@ -494,7 +494,7 @@
                 ]
             }
         },
-        "/v1/apprenants/import": {
+        "/api/v1/apprenants/import": {
             "post": {
                 "summary": "Importer des apprenants",
                 "operationId": "importApprenants",
@@ -557,7 +557,7 @@
                 ]
             }
         },
-        "/v1/apprenants/{id}": {
+        "/api/v1/apprenants/{id}": {
             "get": {
                 "summary": "Obtenir les informations d'un apprenant",
                 "operationId": "getApprenant",
