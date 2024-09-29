@@ -5,8 +5,167 @@
         "version": "1.0.0",
         "description": "API pour gérer les dettes des clients dans un magasin"
     },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        },
+        "schemas": {
+            "User": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "prenom": {
+                        "type": "string"
+                    },
+                    "nom": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "role": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Apprenant": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "prenom": {
+                        "type": "string"
+                    },
+                    "nom": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "nom_tuteur": {
+                        "type": "string"
+                    },
+                    "prenom_tuteur": {
+                        "type": "string"
+                    },
+                    "contact_tuteur": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Promotion": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "libelle": {
+                        "type": "string"
+                    },
+                    "dateDebut": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "dateFin": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "duree": {
+                        "type": "integer"
+                    },
+                    "photo_couverture": {
+                        "type": "string"
+                    },
+                    "referentiels": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string"
+                                },
+                                "competences": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "apprenants": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "Referentiel": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "code": {
+                        "type": "string"
+                    },
+                    "libelle": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "photo_couverture": {
+                        "type": "string"
+                    },
+                    "competences": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "nom": {
+                                    "type": "string"
+                                },
+                                "duree_acquisition": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "type": {
+                                    "type": "string"
+                                },
+                                "modules": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "nom": {
+                                                "type": "string"
+                                            },
+                                            "description": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
     "paths": {
-        "/api/v1/user": {
+        "/api/v1/users": {
             "get": {
                 "summary": "Obtenir les informations de l'utilisateur authentifié",
                 "operationId": "getUser",
@@ -28,130 +187,114 @@
                         "bearerAuth": []
                     }
                 ]
-            }
-        },
-        "/api/test-firebase": {
-            "get": {
-                "summary": "Tester la connexion à Firebase",
-                "operationId": "testFirebase",
-                "tags": ["Firebase"],
-                "responses": {
-                    "200": {
-                        "description": "Connexion à Firebase réussie",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean"
-                                        },
-                                        "message": {
-                                            "type": "string"
-                                        },
-                                        "data": {
-                                            "type": "object",
-                                            "properties": {
-                                                "timestamp": {
-                                                    "type": "integer"
-                                                },
-                                                "message": {
-                                                    "type": "string"
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Erreur de connexion à Firebase",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean"
-                                        },
-                                        "message": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/user": {
+            },
             "post": {
                 "summary": "Créer un nouvel utilisateur",
                 "operationId": "createUser",
                 "tags": ["User"],
                 "requestBody": {
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/User"
+                                "type": "object",
+                                "properties": {
+                                    "prenom": {
+                                        "type": "string"
+                                    },
+                                    "nom": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "role": {
+                                        "type": "string"
+                                    }
+                                }
                             }
                         }
                     }
                 },
                 "responses": {
                     "201": {
-                        "description": "Utilisateur créé avec succès",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/User"
-                                }
-                            }
-                        }
+                        "description": "Utilisateur créé avec succès"
+                    },
+                    "400": {
+                        "description": "Données invalides"
                     }
                 }
             }
         },
         "/api/login": {
             "post": {
-                "summary": "Connexion de l'utilisateur",
-                "operationId": "loginUser",
+                "summary": "Authentifier un utilisateur",
+                "operationId": "login",
                 "tags": ["Auth"],
                 "requestBody": {
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/LoginRequest"
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "Connexion réussie",
+                        "description": "Authentification réussie",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/LoginResponse"
+                                    "type": "object",
+                                    "properties": {
+                                        "access_token": {
+                                            "type": "string"
+                                        },
+                                        "token_type": {
+                                            "type": "string"
+                                        },
+                                        "user": {
+                                            "$ref": "#/components/schemas/User"
+                                        }
+                                    }
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "description": "Authentification échouée"
                     }
                 }
             }
         },
         "/api/logout": {
             "post": {
-                "summary": "Déconnexion de l'utilisateur",
-                "operationId": "logoutUser",
+                "summary": "Déconnecter un utilisateur",
+                "operationId": "logout",
                 "tags": ["Auth"],
                 "responses": {
                     "200": {
                         "description": "Déconnexion réussie"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/change-password": {
@@ -160,10 +303,25 @@
                 "operationId": "changePassword",
                 "tags": ["User"],
                 "requestBody": {
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/ChangePasswordRequest"
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "current_password": {
+                                        "type": "string"
+                                    },
+                                    "new_password": {
+                                        "type": "string"
+                                    },
+                                    "new_password_confirmation": {
+                                        "type": "string"
+                                    }
+                                }
                             }
                         }
                     }
@@ -171,11 +329,19 @@
                 "responses": {
                     "200": {
                         "description": "Mot de passe changé avec succès"
+                    },
+                    "400": {
+                        "description": "Données invalides"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
-        "/api/v1/users/{id}": {
+        "/api/users/{id}": {
             "patch": {
                 "summary": "Mettre à jour un utilisateur",
                 "operationId": "updateUser",
@@ -191,24 +357,38 @@
                     }
                 ],
                 "requestBody": {
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/User"
+                                "type": "object",
+                                "properties": {
+                                    "prenom": {
+                                        "type": "string"
+                                    },
+                                    "nom": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "role": {
+                                        "type": "string"
+                                    }
+                                }
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "Utilisateur mis à jour avec succès",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/User"
-                                }
-                            }
-                        }
+                        "description": "Utilisateur mis à jour avec succès"
+                    },
+                    "400": {
+                        "description": "Données invalides"
                     }
                 },
                 "security": [
@@ -218,7 +398,7 @@
                 ]
             }
         },
-        "/api/v1/users": {
+        "/v1/users": {
             "get": {
                 "summary": "Obtenir la liste des utilisateurs",
                 "operationId": "getUsers",
@@ -245,30 +425,66 @@
                 ]
             }
         },
-        "/api/apprenants": {
+        "/apprenants": {
             "post": {
                 "summary": "Créer un nouvel apprenant",
                 "operationId": "createApprenant",
                 "tags": ["Apprenant"],
                 "requestBody": {
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Apprenant"
+                                "type": "object",
+                                "properties": {
+                                    "prenom": {
+                                        "type": "string"
+                                    },
+                                    "nom": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "nom_tuteur": {
+                                        "type": "string"
+                                    },
+                                    "prenom_tuteur": {
+                                        "type": "string"
+                                    },
+                                    "contact_tuteur": {
+                                        "type": "string"
+                                    },
+                                    "photocopie_cni": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "diplome": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "extrait_naissance": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "casier_judiciaire": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                }
                             }
                         }
                     }
                 },
                 "responses": {
                     "201": {
-                        "description": "Apprenant créé avec succès",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Apprenant"
-                                }
-                            }
-                        }
+                        "description": "Apprenant créé avec succès"
+                    },
+                    "400": {
+                        "description": "Données invalides"
                     }
                 },
                 "security": [
@@ -278,16 +494,23 @@
                 ]
             }
         },
-        "/api/v1/apprenants/import": {
+        "/v1/apprenants/import": {
             "post": {
                 "summary": "Importer des apprenants",
                 "operationId": "importApprenants",
                 "tags": ["Apprenant"],
                 "requestBody": {
+                    "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/ImportApprenantsRequest"
+                                "type": "object",
+                                "properties": {
+                                    "file": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                }
                             }
                         }
                     }
@@ -295,6 +518,9 @@
                 "responses": {
                     "200": {
                         "description": "Apprenants importés avec succès"
+                    },
+                    "400": {
+                        "description": "Données invalides"
                     }
                 },
                 "security": [
@@ -304,9 +530,9 @@
                 ]
             }
         },
-        "/api/v1/apprenants": {
+        "/apprenants": {
             "get": {
-                "summary": "Obtenir la liste des apprenants de la promotion active",
+                "summary": "Obtenir les apprenants de la promotion active",
                 "operationId": "getApprenantsFromActivePromotion",
                 "tags": ["Apprenant"],
                 "responses": {
@@ -331,55 +557,34 @@
                 ]
             }
         },
-        "/api/referentiels": {
+        "/v1/apprenants/{id}": {
             "get": {
-                "summary": "Obtenir la liste des référentiels",
-                "operationId": "getReferentiels",
-                "tags": ["Referentiel"],
+                "summary": "Obtenir les informations d'un apprenant",
+                "operationId": "getApprenant",
+                "tags": ["Apprenant"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Liste des référentiels",
+                        "description": "Informations de l'apprenant",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Referentiel"
-                                    }
+                                    "$ref": "#/components/schemas/Apprenant"
                                 }
                             }
                         }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            },
-            "post": {
-                "summary": "Créer un nouveau référentiel",
-                "operationId": "createReferentiel",
-                "tags": ["Referentiel"],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/Referentiel"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Référentiel créé avec succès",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Referentiel"
-                                }
-                            }
-                        }
+                    },
+                    "404": {
+                        "description": "Apprenant non trouvé"
                     }
                 },
                 "security": [
@@ -389,130 +594,20 @@
                 ]
             }
         },
-        "/api/referentiels/{id}": {
+        "/v1/apprenants/inactive": {
             "get": {
-                "summary": "Obtenir un référentiel par ID",
-                "operationId": "getReferentielById",
-                "tags": ["Referentiel"],
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "summary": "Obtenir les apprenants inactifs de la promotion active",
+                "operationId": "getInactiveApprenantsFromActivePromotion",
+                "tags": ["Apprenant"],
                 "responses": {
                     "200": {
-                        "description": "Référentiel",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Referentiel"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            },
-            "put": {
-                "summary": "Mettre à jour un référentiel",
-                "operationId": "updateReferentiel",
-                "tags": ["Referentiel"],
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/Referentiel"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Référentiel mis à jour avec succès",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Referentiel"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            },
-            "delete": {
-                "summary": "Supprimer un référentiel",
-                "operationId": "deleteReferentiel",
-                "tags": ["Referentiel"],
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Référentiel supprimé avec succès"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/referentiels/{id}/modules": {
-            "get": {
-                "summary": "Obtenir les modules d'un référentiel",
-                "operationId": "listModules",
-                "tags": ["Referentiel"],
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Liste des modules",
+                        "description": "Liste des apprenants inactifs",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Module"
+                                        "$ref": "#/components/schemas/Apprenant"
                                     }
                                 }
                             }
@@ -526,14 +621,14 @@
                 ]
             }
         },
-        "/api/referentiels/{id}/competences": {
-            "post": {
-                "summary": "Ajouter une compétence à un référentiel",
-                "operationId": "addCompetence",
-                "tags": ["Referentiel"],
+        "/apprenants/filter-by-referentiel/{referentielId}": {
+            "get": {
+                "summary": "Filtrer les apprenants par référentiel",
+                "operationId": "filterApprenantsByReferentiel",
+                "tags": ["Apprenant"],
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "referentielId",
                         "in": "path",
                         "required": true,
                         "schema": {
@@ -541,52 +636,22 @@
                         }
                     }
                 ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/Competence"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Compétence ajoutée avec succès",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Competence"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/archive/referentiels": {
-            "get": {
-                "summary": "Obtenir les référentiels archivés",
-                "operationId": "getArchivedReferentiels",
-                "tags": ["Referentiel"],
                 "responses": {
                     "200": {
-                        "description": "Liste des référentiels archivés",
+                        "description": "Liste des apprenants filtrés par référentiel",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Referentiel"
+                                        "$ref": "#/components/schemas/Apprenant"
                                     }
                                 }
                             }
                         }
+                    },
+                    "404": {
+                        "description": "Aucun apprenant trouvé pour ce référentiel"
                     }
                 },
                 "security": [
@@ -596,7 +661,7 @@
                 ]
             }
         },
-        "/api/promotions": {
+        "/promotions": {
             "get": {
                 "summary": "Obtenir la liste des promotions",
                 "operationId": "getPromotions",
@@ -627,24 +692,63 @@
                 "operationId": "createPromotion",
                 "tags": ["Promotion"],
                 "requestBody": {
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Promotion"
+                                "type": "object",
+                                "properties": {
+                                    "libelle": {
+                                        "type": "string"
+                                    },
+                                    "dateDebut": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "dateFin": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "duree": {
+                                        "type": "integer"
+                                    },
+                                    "photo_couverture": {
+                                        "type": "string"
+                                    },
+                                    "referentiels": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "competences": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "apprenants": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 },
                 "responses": {
                     "201": {
-                        "description": "Promotion créée avec succès",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Promotion"
-                                }
-                            }
-                        }
+                        "description": "Promotion créée avec succès"
+                    },
+                    "400": {
+                        "description": "Données invalides"
                     }
                 },
                 "security": [
@@ -654,10 +758,10 @@
                 ]
             }
         },
-        "/api/promotions/{id}": {
+        "/promotions/{id}": {
             "get": {
-                "summary": "Obtenir une promotion par ID",
-                "operationId": "getPromotionById",
+                "summary": "Obtenir les informations d'une promotion",
+                "operationId": "getPromotion",
                 "tags": ["Promotion"],
                 "parameters": [
                     {
@@ -671,7 +775,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Promotion",
+                        "description": "Informations de la promotion",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -679,6 +783,9 @@
                                 }
                             }
                         }
+                    },
+                    "404": {
+                        "description": "Promotion non trouvée"
                     }
                 },
                 "security": [
@@ -702,24 +809,63 @@
                     }
                 ],
                 "requestBody": {
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Promotion"
+                                "type": "object",
+                                "properties": {
+                                    "libelle": {
+                                        "type": "string"
+                                    },
+                                    "dateDebut": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "dateFin": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "duree": {
+                                        "type": "integer"
+                                    },
+                                    "photo_couverture": {
+                                        "type": "string"
+                                    },
+                                    "referentiels": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "competences": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "apprenants": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "Promotion mise à jour avec succès",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Promotion"
-                                }
-                            }
-                        }
+                        "description": "Promotion mise à jour avec succès"
+                    },
+                    "400": {
+                        "description": "Données invalides"
                     }
                 },
                 "security": [
@@ -743,8 +889,11 @@
                     }
                 ],
                 "responses": {
-                    "204": {
+                    "200": {
                         "description": "Promotion supprimée avec succès"
+                    },
+                    "404": {
+                        "description": "Promotion non trouvée"
                     }
                 },
                 "security": [
@@ -754,7 +903,7 @@
                 ]
             }
         },
-        "/api/v1/promotions/{id}/referentiels": {
+        "/v1/promotions/{id}/referentiels": {
             "patch": {
                 "summary": "Mettre à jour les référentiels d'une promotion",
                 "operationId": "updatePromotionReferentiels",
@@ -770,17 +919,46 @@
                     }
                 ],
                 "requestBody": {
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/UpdatePromotionReferentielsRequest"
+                                "type": "object",
+                                "properties": {
+                                    "add": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "competences": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "remove": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "Référentiels de la promotion mis à jour avec succès"
+                        "description": "Référentiels mis à jour avec succès"
+                    },
+                    "400": {
+                        "description": "Données invalides"
                     }
                 },
                 "security": [
@@ -790,7 +968,7 @@
                 ]
             }
         },
-        "/api/v1/promotions/{id}/etat": {
+        "/v1/promotions/{id}/etat": {
             "patch": {
                 "summary": "Mettre à jour l'état d'une promotion",
                 "operationId": "updatePromotionStatus",
@@ -806,17 +984,27 @@
                     }
                 ],
                 "requestBody": {
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/UpdatePromotionStatusRequest"
+                                "type": "object",
+                                "properties": {
+                                    "etat": {
+                                        "type": "string",
+                                        "enum": ["Actif", "Inactif"]
+                                    }
+                                }
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "État de la promotion mis à jour avec succès"
+                        "description": "Statut de la promotion mis à jour avec succès"
+                    },
+                    "400": {
+                        "description": "Données invalides"
                     }
                 },
                 "security": [
@@ -826,7 +1014,7 @@
                 ]
             }
         },
-        "/api/v1/promotions": {
+        "/v1/promotions": {
             "get": {
                 "summary": "Obtenir la liste des promotions",
                 "operationId": "getPromotionsV1",
@@ -853,20 +1041,47 @@
                 ]
             }
         },
-        "/api/v1/promotions/encour": {
+        "/v1/promotions/encour": {
             "get": {
-                "summary": "Obtenir les promotions en cours",
-                "operationId": "getPromotionsActive",
+                "summary": "Obtenir la promotion active",
+                "operationId": "getPromotionActive",
                 "tags": ["Promotion"],
                 "responses": {
                     "200": {
-                        "description": "Liste des promotions en cours",
+                        "description": "Promotion active",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Promotion"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Aucune promotion active"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/referentiels": {
+            "get": {
+                "summary": "Obtenir la liste des référentiels",
+                "operationId": "getReferentiels",
+                "tags": ["Referentiel"],
+                "responses": {
+                    "200": {
+                        "description": "Liste des référentiels",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Promotion"
+                                        "$ref": "#/components/schemas/Referentiel"
                                     }
                                 }
                             }
@@ -878,13 +1093,89 @@
                         "bearerAuth": []
                     }
                 ]
+            },
+            "post": {
+                "summary": "Créer un nouveau référentiel",
+                "operationId": "createReferentiel",
+                "tags": ["Referentiel"],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "code": {
+                                        "type": "string"
+                                    },
+                                    "libelle": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "photo_couverture": {
+                                        "type": "string"
+                                    },
+                                    "competences": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "nom": {
+                                                    "type": "string"
+                                                },
+                                                "duree_acquisition": {
+                                                    "type": "string"
+                                                },
+                                                "description": {
+                                                    "type": "string"
+                                                },
+                                                "type": {
+                                                    "type": "string"
+                                                },
+                                                "modules": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "nom": {
+                                                                "type": "string"
+                                                            },
+                                                            "description": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Référentiel créé avec succès"
+                    },
+                    "400": {
+                        "description": "Données invalides"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
-        "/api/v1/apprenants/{id}": {
+        "/api/referentiels/{id}": {
             "get": {
-                "summary": "Obtenir un apprenant par ID",
-                "operationId": "getApprenantById",
-                "tags": ["Apprenant"],
+                "summary": "Obtenir les informations d'un référentiel",
+                "operationId": "getReferentiel",
+                "tags": ["Referentiel"],
                 "parameters": [
                     {
                         "name": "id",
@@ -897,14 +1188,17 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Apprenant",
+                        "description": "Informations du référentiel",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Apprenant"
+                                    "$ref": "#/components/schemas/Referentiel"
                                 }
                             }
                         }
+                    },
+                    "404": {
+                        "description": "Référentiel non trouvé"
                     }
                 },
                 "security": [
@@ -912,43 +1206,107 @@
                         "bearerAuth": []
                     }
                 ]
-            }
-        },
-        "/api/v1/apprenants/inactive": {
-            "get": {
-                "summary": "Obtenir les apprenants inactifs de la promotion active",
-                "operationId": "getInactiveApprenantsFromActivePromotion",
-                "tags": ["Apprenant"],
-                "responses": {
-                    "200": {
-                        "description": "Liste des apprenants inactifs",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Apprenant"
+            },
+            "put": {
+                "summary": "Mettre à jour un référentiel",
+                "operationId": "updateReferentiel",
+                "tags": ["Referentiel"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "code": {
+                                        "type": "string"
+                                    },
+                                    "libelle": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "photo_couverture": {
+                                        "type": "string"
+                                    },
+                                    "statut": {
+                                        "type": "string",
+                                        "enum": ["Actif", "Inactif", "Archiver"]
+                                    },
+                                    "competences": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "nom": {
+                                                    "type": "string"
+                                                },
+                                                "duree_acquisition": {
+                                                    "type": "string"
+                                                },
+                                                "description": {
+                                                    "type": "string"
+                                                },
+                                                "type": {
+                                                    "type": "string"
+                                                },
+                                                "modules": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "nom": {
+                                                                "type": "string"
+                                                            },
+                                                            "description": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "delete_competence": {
+                                        "type": "string"
                                     }
                                 }
                             }
                         }
                     }
                 },
+                "responses": {
+                    "200": {
+                        "description": "Référentiel mis à jour avec succès"
+                    },
+                    "400": {
+                        "description": "Données invalides"
+                    }
+                },
                 "security": [
                     {
                         "bearerAuth": []
                     }
                 ]
-            }
-        },
-        "/api/apprenants/filter-by-referentiel/{referentielId}": {
-            "get": {
-                "summary": "Filtrer les apprenants par référentiel",
-                "operationId": "filterApprenantsByReferentiel",
-                "tags": ["Apprenant"],
+            },
+            "delete": {
+                "summary": "Supprimer un référentiel",
+                "operationId": "deleteReferentiel",
+                "tags": ["Referentiel"],
                 "parameters": [
                     {
-                        "name": "referentielId",
+                        "name": "id",
                         "in": "path",
                         "required": true,
                         "schema": {
@@ -958,13 +1316,251 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Liste des apprenants filtrés par référentiel",
+                        "description": "Référentiel supprimé avec succès"
+                    },
+                    "404": {
+                        "description": "Référentiel non trouvé"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/referentiels/{id}/modules": {
+            "get": {
+                "summary": "Obtenir les modules d'un référentiel",
+                "operationId": "getReferentielModules",
+                "tags": ["Referentiel"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Liste des modules du référentiel",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Apprenant"
+                                        "type": "object",
+                                        "properties": {
+                                            "nom": {
+                                                "type": "string"
+                                            },
+                                            "description": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Référentiel non trouvé"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/referentiels/{id}/competences": {
+            "post": {
+                "summary": "Ajouter une compétence à un référentiel",
+                "operationId": "addReferentielCompetence",
+                "tags": ["Referentiel"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nom": {
+                                        "type": "string"
+                                    },
+                                    "duree_acquisition": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string"
+                                    },
+                                    "modules": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "nom": {
+                                                    "type": "string"
+                                                },
+                                                "description": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Compétence ajoutée avec succès"
+                    },
+                    "400": {
+                        "description": "Données invalides"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/referentiels/{referentielId}/competences/{competenceNom}/modules": {
+            "post": {
+                "summary": "Ajouter un module à une compétence d'un référentiel",
+                "operationId": "addReferentielCompetenceModule",
+                "tags": ["Referentiel"],
+                "parameters": [
+                    {
+                        "name": "referentielId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "competenceNom",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nom": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Module ajouté avec succès"
+                    },
+                    "400": {
+                        "description": "Données invalides"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/referentiels/{id}": {
+            "patch": {
+                "summary": "Mettre à jour le statut d'un référentiel",
+                "operationId": "updateReferentielStatus",
+                "tags": ["Referentiel"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "statut": {
+                                        "type": "string",
+                                        "enum": ["Actif", "Inactif", "Archiver"]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Statut du référentiel mis à jour avec succès"
+                    },
+                    "400": {
+                        "description": "Données invalides"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/archive/referentiels": {
+            "get": {
+                "summary": "Obtenir la liste des référentiels archivés",
+                "operationId": "getArchivedReferentiels",
+                "tags": ["Referentiel"],
+                "responses": {
+                    "200": {
+                        "description": "Liste des référentiels archivés",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Referentiel"
                                     }
                                 }
                             }
@@ -976,173 +1572,6 @@
                         "bearerAuth": []
                     }
                 ]
-            }
-        }
-    },
-    "components": {
-        "schemas": {
-            "User": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "string"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "email": {
-                        "type": "string"
-                    },
-                    "password": {
-                        "type": "string"
-                    }
-                }
-            },
-            "LoginRequest": {
-                "type": "object",
-                "properties": {
-                    "email": {
-                        "type": "string"
-                    },
-                    "password": {
-                        "type": "string"
-                    }
-                }
-            },
-            "LoginResponse": {
-                "type": "object",
-                "properties": {
-                    "token": {
-                        "type": "string"
-                    }
-                }
-            },
-            "ChangePasswordRequest": {
-                "type": "object",
-                "properties": {
-                    "oldPassword": {
-                        "type": "string"
-                    },
-                    "newPassword": {
-                        "type": "string"
-                    }
-                }
-            },
-            "Apprenant": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "string"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "email": {
-                        "type": "string"
-                    },
-                    "promotionId": {
-                        "type": "string"
-                    }
-                }
-            },
-            "ImportApprenantsRequest": {
-                "type": "object",
-                "properties": {
-                    "apprenants": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/Apprenant"
-                        }
-                    }
-                }
-            },
-            "Referentiel": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "string"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "description": {
-                        "type": "string"
-                    }
-                }
-            },
-            "Module": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "string"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "description": {
-                        "type": "string"
-                    }
-                }
-            },
-            "Competence": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "string"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "description": {
-                        "type": "string"
-                    }
-                }
-            },
-            "Promotion": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "string"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "description": {
-                        "type": "string"
-                    },
-                    "referentielId": {
-                        "type": "string"
-                    },
-                    "status": {
-                        "type": "string"
-                    }
-                }
-            },
-            "UpdatePromotionReferentielsRequest": {
-                "type": "object",
-                "properties": {
-                    "referentielIds": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "UpdatePromotionStatusRequest": {
-                "type": "object",
-                "properties": {
-                    "status": {
-                        "type": "string"
-                    }
-                }
-            }
-        },
-        "securitySchemes": {
-            "bearerAuth": {
-                "type": "http",
-                "scheme": "bearer",
-                "bearerFormat": "JWT"
             }
         }
     }
