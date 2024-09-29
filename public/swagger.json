@@ -294,89 +294,93 @@
             }
         },
         "/api/apprenants": {
-            "post": {
-                "summary": "Create a new apprenant",
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "prenom": {
-                                        "type": "string"
-                                    },
-                                    "nom": {
-                                        "type": "string"
-                                    },
-                                    "email": {
-                                        "type": "string",
-                                        "format": "email"
-                                    },
-                                    "image": {
-                                        "type": "string",
-                                        "format": "binary"
-                                    },
-                                    "password": {
-                                        "type": "string"
-                                    },
-                                    "nom_tuteur": {
-                                        "type": "string"
-                                    },
-                                    "prenom_tuteur": {
-                                        "type": "string"
-                                    },
-                                    "photocopie_cni": {
-                                        "type": "string",
-                                        "format": "binary"
-                                    },
-                                    "diplome": {
-                                        "type": "string",
-                                        "format": "binary"
-                                    },
-                                    "contact_tuteur": {
-                                        "type": "string"
-                                    },
-                                    "extrait_naissance": {
-                                        "type": "string",
-                                        "format": "binary"
-                                    },
-                                    "casier_judiciaire": {
-                                        "type": "string",
-                                        "format": "binary"
-                                    }
-                                },
-                                "required": [
-                                    "prenom",
-                                    "nom",
-                                    "email",
-                                    "password",
-                                    "nom_tuteur",
-                                    "prenom_tuteur",
-                                    "photocopie_cni",
-                                    "diplome",
-                                    "contact_tuteur",
-                                    "extrait_naissance",
-                                    "casier_judiciaire"
-                                ]
+    "post": {
+        "summary": "Create a new apprenant",
+        "security": [
+            {
+                "bearerAuth": []
+            }
+        ],
+        "requestBody": {
+            "content": {
+                "multipart/form-data": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "prenom": {
+                                "type": "string"
+                            },
+                            "nom": {
+                                "type": "string"
+                            },
+                            "email": {
+                                "type": "string",
+                                "format": "email"
+                            },
+                            "image": {
+                                "type": "string",
+                                "format": "binary"
+                            },
+                            "password": {
+                                "type": "string"
+                            },
+                            "password_confirmation": {
+                                "type": "string"
+                            },
+                            "nom_tuteur": {
+                                "type": "string"
+                            },
+                            "prenom_tuteur": {
+                                "type": "string"
+                            },
+                            "photocopie_cni": {
+                                "type": "string",
+                                "format": "binary"
+                            },
+                            "diplome": {
+                                "type": "string",
+                                "format": "binary"
+                            },
+                            "contact_tuteur": {
+                                "type": "string"
+                            },
+                            "extrait_naissance": {
+                                "type": "string",
+                                "format": "binary"
+                            },
+                            "casier_judiciaire": {
+                                "type": "string",
+                                "format": "binary"
                             }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Apprenant created successfully"
-                    },
-                    "400": {
-                        "description": "Validation error"
+                        },
+                        "required": [
+                            "prenom",
+                            "nom",
+                            "email",
+                            "password",
+                            "password_confirmation",
+                            "nom_tuteur",
+                            "prenom_tuteur",
+                            "photocopie_cni",
+                            "diplome",
+                            "contact_tuteur",
+                            "extrait_naissance",
+                            "casier_judiciaire"
+                        ]
                     }
                 }
             }
         },
+        "responses": {
+            "201": {
+                "description": "Apprenant created successfully"
+            },
+            "400": {
+                "description": "Validation error"
+            }
+        }
+    }
+},
         "/api/v1/apprenants/import": {
             "post": {
                 "summary": "Import apprenants from an Excel file",
