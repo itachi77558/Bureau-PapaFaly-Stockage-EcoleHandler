@@ -6,7 +6,7 @@
         "description": "API pour gérer les dettes des clients dans un magasin"
     },
     "paths": {
-        "/user": {
+        "/api/user": {
             "post": {
                 "summary": "Créer un utilisateur",
                 "requestBody": {
@@ -59,7 +59,7 @@
                 }
             }
         },
-        "/login": {
+        "/api/login": {
             "post": {
                 "summary": "Connexion de l'utilisateur",
                 "requestBody": {
@@ -110,7 +110,7 @@
                 }
             }
         },
-        "/logout": {
+        "/api/logout": {
             "post": {
                 "summary": "Déconnexion de l'utilisateur",
                 "responses": {
@@ -123,7 +123,7 @@
                 }
             }
         },
-        "/change-password": {
+        "/api/change-password": {
             "post": {
                 "summary": "Changer le mot de passe de l'utilisateur",
                 "requestBody": {
@@ -164,7 +164,7 @@
                 }
             }
         },
-        "/users/{id}": {
+        "/api/users/{id}": {
             "patch": {
                 "summary": "Mettre à jour un utilisateur",
                 "parameters": [
@@ -226,7 +226,7 @@
                 }
             }
         },
-        "/users": {
+        "/api/users": {
             "get": {
                 "summary": "Obtenir la liste des utilisateurs",
                 "parameters": [
