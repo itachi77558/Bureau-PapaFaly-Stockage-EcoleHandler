@@ -328,7 +328,7 @@
                 }
             }
         },
-        "/v1/users/{id}": {
+        "/api/users/{id}": {
             "patch": {
                 "summary": "Mettre à jour un utilisateur",
                 "description": "Cette route permet de mettre à jour les informations d'un utilisateur.",
