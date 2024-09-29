@@ -65,7 +65,7 @@ Route::post('/change-password', action: [UserController::class, 'changePassword'
 Route::middleware([config('app.auth_mode') === 'firebase' ? 'auth.firebase' : 'auth:api'])->group(function () {
     
     Route::patch('/users/{id}', [UserController::class, 'update']);
-    Route::get('/users', [UserController::class, 'index']);
+    Route::get('/v1/users', [UserController::class, 'index']);
     Route::post('/apprenants', [UserController::class, 'storeApprenant']);
 
     
