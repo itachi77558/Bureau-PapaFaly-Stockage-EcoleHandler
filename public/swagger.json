@@ -304,7 +304,7 @@
                 }
             }
         },
-        "/v1/users/{id}": {
+        "/api/v1/users/{id}": {
             "patch": {
                 "summary": "Mettre à jour un utilisateur",
                 "description": "Cette route permet de mettre à jour les informations d'un utilisateur.",
@@ -399,7 +399,7 @@
                 }
             }
         },
-        "/users": {
+        "/api/users": {
             "get": {
                 "summary": "Récupérer la liste des utilisateurs",
                 "description": "Cette route permet de récupérer la liste des utilisateurs en fonction de leur rôle.",
