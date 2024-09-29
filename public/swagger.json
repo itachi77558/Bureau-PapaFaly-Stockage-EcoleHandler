@@ -12,148 +12,27 @@
                 "scheme": "bearer",
                 "bearerFormat": "JWT"
             }
-        },
-        "schemas": {
-            "User": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "string"
-                    },
-                    "prenom": {
-                        "type": "string"
-                    },
-                    "nom": {
-                        "type": "string"
-                    },
-                    "email": {
-                        "type": "string"
-                    },
-                    "role": {
-                        "type": "string"
+        }
+    },
+    "paths": {
+        "/api/user": {
+            "get": {
+                "summary": "Get the authenticated user",
+                "security": [
+                    {
+                        "bearerAuth": []
                     }
-                }
-            },
-            "Apprenant": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "string"
-                    },
-                    "prenom": {
-                        "type": "string"
-                    },
-                    "nom": {
-                        "type": "string"
-                    },
-                    "email": {
-                        "type": "string"
-                    },
-                    "nom_tuteur": {
-                        "type": "string"
-                    },
-                    "prenom_tuteur": {
-                        "type": "string"
-                    },
-                    "contact_tuteur": {
-                        "type": "string"
-                    }
-                }
-            },
-            "Promotion": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "string"
-                    },
-                    "libelle": {
-                        "type": "string"
-                    },
-                    "dateDebut": {
-                        "type": "string",
-                        "format": "date"
-                    },
-                    "dateFin": {
-                        "type": "string",
-                        "format": "date"
-                    },
-                    "duree": {
-                        "type": "integer"
-                    },
-                    "photo_couverture": {
-                        "type": "string"
-                    },
-                    "referentiels": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "id": {
-                                    "type": "string"
-                                },
-                                "competences": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "string"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "apprenants": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "Referentiel": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "string"
-                    },
-                    "code": {
-                        "type": "string"
-                    },
-                    "libelle": {
-                        "type": "string"
-                    },
-                    "description": {
-                        "type": "string"
-                    },
-                    "photo_couverture": {
-                        "type": "string"
-                    },
-                    "competences": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "nom": {
-                                    "type": "string"
-                                },
-                                "duree_acquisition": {
-                                    "type": "string"
-                                },
-                                "description": {
-                                    "type": "string"
-                                },
-                                "type": {
-                                    "type": "string"
-                                },
-                                "modules": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object",
-                                        "properties": {
-                                            "nom": {
-                                                "type": "string"
-                                            },
-                                            "description": {
-                                                "type": "string"
-                                            }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "user": {
+                                            "type": "object"
                                         }
                                     }
                                 }
@@ -161,39 +40,10 @@
                         }
                     }
                 }
-            }
-        }
-    },
-    "paths": {
-        "/api/v1/users": {
-            "get": {
-                "summary": "Obtenir les informations de l'utilisateur authentifié",
-                "operationId": "getUser",
-                "tags": ["User"],
-                "responses": {
-                    "200": {
-                        "description": "Informations de l'utilisateur",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/User"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
             },
             "post": {
-                "summary": "Créer un nouvel utilisateur",
-                "operationId": "createUser",
-                "tags": ["User"],
+                "summary": "Create a new user",
                 "requestBody": {
-                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
@@ -206,55 +56,61 @@
                                         "type": "string"
                                     },
                                     "email": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
                                     },
                                     "password": {
                                         "type": "string"
                                     },
                                     "role": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "enum": ["Admin", "Coach", "CM", "Apprenant"]
                                     }
-                                }
+                                },
+                                "required": ["prenom", "nom", "email", "password"]
                             }
                         }
                     }
                 },
                 "responses": {
                     "201": {
-                        "description": "Utilisateur créé avec succès"
+                        "description": "User created successfully"
                     },
                     "400": {
-                        "description": "Données invalides"
+                        "description": "Validation error"
                     }
                 }
             }
         },
         "/api/login": {
             "post": {
-                "summary": "Authentifier un utilisateur",
-                "operationId": "login",
-                "tags": ["Auth"],
+                "summary": "Login a user",
                 "requestBody": {
-                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "type": "object",
                                 "properties": {
                                     "email": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "format": "email"
                                     },
                                     "password": {
                                         "type": "string"
                                     }
-                                }
+                                },
+                                "required": ["email", "password"]
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "Authentification réussie",
+                        "description": "Successful login",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -267,7 +123,7 @@
                                             "type": "string"
                                         },
                                         "user": {
-                                            "$ref": "#/components/schemas/User"
+                                            "type": "object"
                                         }
                                     }
                                 }
@@ -275,42 +131,38 @@
                         }
                     },
                     "401": {
-                        "description": "Authentification échouée"
+                        "description": "Unauthorized"
                     }
                 }
             }
         },
         "/api/logout": {
             "post": {
-                "summary": "Déconnecter un utilisateur",
-                "operationId": "logout",
-                "tags": ["Auth"],
-                "responses": {
-                    "200": {
-                        "description": "Déconnexion réussie"
-                    }
-                },
+                "summary": "Logout a user",
                 "security": [
                     {
                         "bearerAuth": []
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful logout"
+                    }
+                }
             }
         },
         "/api/change-password": {
             "post": {
-                "summary": "Changer le mot de passe de l'utilisateur",
-                "operationId": "changePassword",
-                "tags": ["User"],
+                "summary": "Change user password",
                 "requestBody": {
-                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "type": "object",
                                 "properties": {
                                     "email": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "format": "email"
                                     },
                                     "current_password": {
                                         "type": "string"
@@ -321,31 +173,30 @@
                                     "new_password_confirmation": {
                                         "type": "string"
                                     }
-                                }
+                                },
+                                "required": ["email", "current_password", "new_password", "new_password_confirmation"]
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "Mot de passe changé avec succès"
+                        "description": "Password changed successfully"
                     },
                     "400": {
-                        "description": "Données invalides"
+                        "description": "Validation error"
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             }
         },
         "/api/users/{id}": {
             "patch": {
-                "summary": "Mettre à jour un utilisateur",
-                "operationId": "updateUser",
-                "tags": ["User"],
+                "summary": "Update a user",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "id",
@@ -357,7 +208,6 @@
                     }
                 ],
                 "requestBody": {
-                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
@@ -370,13 +220,19 @@
                                         "type": "string"
                                     },
                                     "email": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
                                     },
                                     "password": {
                                         "type": "string"
                                     },
                                     "role": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "enum": ["Admin", "Coach", "CM", "Apprenant"]
                                     }
                                 }
                             }
@@ -385,53 +241,67 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Utilisateur mis à jour avec succès"
+                        "description": "User updated successfully"
                     },
                     "400": {
-                        "description": "Données invalides"
+                        "description": "Validation error"
                     }
-                },
+                }
+            }
+        },
+        "/api/v1/users": {
+            "get": {
+                "summary": "Get all users",
                 "security": [
                     {
                         "bearerAuth": []
                     }
-                ]
-            }
-        },
-        "/api/users": {
-            "get": {
-                "summary": "Obtenir la liste des utilisateurs",
-                "operationId": "getUsers",
-                "tags": ["User"],
+                ],
                 "responses": {
                     "200": {
-                        "description": "Liste des utilisateurs",
+                        "description": "Successful response",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/User"
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "prenom": {
+                                                "type": "string"
+                                            },
+                                            "nom": {
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "type": "string",
+                                                "format": "email"
+                                            },
+                                            "role": {
+                                                "type": "string",
+                                                "enum": ["Admin", "Coach", "CM", "Apprenant"]
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             }
         },
         "/api/apprenants": {
             "post": {
-                "summary": "Créer un nouvel apprenant",
-                "operationId": "createApprenant",
-                "tags": ["Apprenant"],
+                "summary": "Create a new apprenant",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "requestBody": {
-                    "required": true,
                     "content": {
                         "multipart/form-data": {
                             "schema": {
@@ -444,7 +314,12 @@
                                         "type": "string"
                                     },
                                     "email": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
                                     },
                                     "password": {
                                         "type": "string"
@@ -455,9 +330,6 @@
                                     "prenom_tuteur": {
                                         "type": "string"
                                     },
-                                    "contact_tuteur": {
-                                        "type": "string"
-                                    },
                                     "photocopie_cni": {
                                         "type": "string",
                                         "format": "binary"
@@ -465,6 +337,9 @@
                                     "diplome": {
                                         "type": "string",
                                         "format": "binary"
+                                    },
+                                    "contact_tuteur": {
+                                        "type": "string"
                                     },
                                     "extrait_naissance": {
                                         "type": "string",
@@ -474,33 +349,43 @@
                                         "type": "string",
                                         "format": "binary"
                                     }
-                                }
+                                },
+                                "required": [
+                                    "prenom",
+                                    "nom",
+                                    "email",
+                                    "password",
+                                    "nom_tuteur",
+                                    "prenom_tuteur",
+                                    "photocopie_cni",
+                                    "diplome",
+                                    "contact_tuteur",
+                                    "extrait_naissance",
+                                    "casier_judiciaire"
+                                ]
                             }
                         }
                     }
                 },
                 "responses": {
                     "201": {
-                        "description": "Apprenant créé avec succès"
+                        "description": "Apprenant created successfully"
                     },
                     "400": {
-                        "description": "Données invalides"
+                        "description": "Validation error"
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             }
         },
         "/api/v1/apprenants/import": {
             "post": {
-                "summary": "Importer des apprenants",
-                "operationId": "importApprenants",
-                "tags": ["Apprenant"],
+                "summary": "Import apprenants from an Excel file",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "requestBody": {
-                    "required": true,
                     "content": {
                         "multipart/form-data": {
                             "schema": {
@@ -510,58 +395,55 @@
                                         "type": "string",
                                         "format": "binary"
                                     }
-                                }
+                                },
+                                "required": ["file"]
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "Apprenants importés avec succès"
+                        "description": "Apprenants imported successfully"
                     },
                     "400": {
-                        "description": "Données invalides"
+                        "description": "Validation error"
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             }
         },
         "/api/v1/apprenants": {
             "get": {
-                "summary": "Obtenir les apprenants de la promotion active",
-                "operationId": "getApprenantsFromActivePromotion",
-                "tags": ["Apprenant"],
+                "summary": "Get apprenants from active promotion",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Liste des apprenants",
+                        "description": "Successful response",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Apprenant"
+                                        "type": "object"
                                     }
                                 }
                             }
                         }
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             }
         },
         "/api/v1/apprenants/{id}": {
             "get": {
-                "summary": "Obtenir les informations d'un apprenant",
-                "operationId": "getApprenant",
-                "tags": ["Apprenant"],
+                "summary": "Get an apprenant by ID",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "id",
@@ -574,58 +456,54 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Informations de l'apprenant",
+                        "description": "Successful response",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Apprenant"
+                                    "type": "object"
                                 }
                             }
                         }
                     },
                     "404": {
-                        "description": "Apprenant non trouvé"
+                        "description": "Apprenant not found"
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             }
         },
         "/api/v1/apprenants/inactive": {
             "get": {
-                "summary": "Obtenir les apprenants inactifs de la promotion active",
-                "operationId": "getInactiveApprenantsFromActivePromotion",
-                "tags": ["Apprenant"],
+                "summary": "Get inactive apprenants from active promotion",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Liste des apprenants inactifs",
+                        "description": "Successful response",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Apprenant"
+                                        "type": "object"
                                     }
                                 }
                             }
                         }
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             }
         },
         "/api/apprenants/filter-by-referentiel/{referentielId}": {
             "get": {
-                "summary": "Filtrer les apprenants par référentiel",
-                "operationId": "filterApprenantsByReferentiel",
-                "tags": ["Apprenant"],
+                "summary": "Filter apprenants by referentiel",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "referentielId",
@@ -638,468 +516,53 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Liste des apprenants filtrés par référentiel",
+                        "description": "Successful response",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Apprenant"
+                                        "type": "object"
                                     }
                                 }
                             }
                         }
-                    },
-                    "404": {
-                        "description": "Aucun apprenant trouvé pour ce référentiel"
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             }
         },
-        "/api/v1/promotions": {
+        "/api/referentiels": {
             "get": {
-                "summary": "Obtenir la liste des promotions",
-                "operationId": "getPromotions",
-                "tags": ["Promotion"],
+                "summary": "Get all referentiels",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Liste des promotions",
+                        "description": "Successful response",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Promotion"
+                                        "type": "object"
                                     }
                                 }
                             }
                         }
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             },
             "post": {
-                "summary": "Créer une nouvelle promotion",
-                "operationId": "createPromotion",
-                "tags": ["Promotion"],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "libelle": {
-                                        "type": "string"
-                                    },
-                                    "dateDebut": {
-                                        "type": "string",
-                                        "format": "date"
-                                    },
-                                    "dateFin": {
-                                        "type": "string",
-                                        "format": "date"
-                                    },
-                                    "duree": {
-                                        "type": "integer"
-                                    },
-                                    "photo_couverture": {
-                                        "type": "string"
-                                    },
-                                    "referentiels": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "object",
-                                            "properties": {
-                                                "id": {
-                                                    "type": "string"
-                                                },
-                                                "competences": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "string"
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    },
-                                    "apprenants": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Promotion créée avec succès"
-                    },
-                    "400": {
-                        "description": "Données invalides"
-                    }
-                },
+                "summary": "Create a new referentiel",
                 "security": [
                     {
                         "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/promotions/{id}": {
-            "get": {
-                "summary": "Obtenir les informations d'une promotion",
-                "operationId": "getPromotion",
-                "tags": ["Promotion"],
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Informations de la promotion",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Promotion"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Promotion non trouvée"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            },
-            "patch": {
-                "summary": "Mettre à jour une promotion",
-                "operationId": "updatePromotion",
-                "tags": ["Promotion"],
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
                     }
                 ],
                 "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "libelle": {
-                                        "type": "string"
-                                    },
-                                    "dateDebut": {
-                                        "type": "string",
-                                        "format": "date"
-                                    },
-                                    "dateFin": {
-                                        "type": "string",
-                                        "format": "date"
-                                    },
-                                    "duree": {
-                                        "type": "integer"
-                                    },
-                                    "photo_couverture": {
-                                        "type": "string"
-                                    },
-                                    "referentiels": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "object",
-                                            "properties": {
-                                                "id": {
-                                                    "type": "string"
-                                                },
-                                                "competences": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "string"
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    },
-                                    "apprenants": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Promotion mise à jour avec succès"
-                    },
-                    "400": {
-                        "description": "Données invalides"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            },
-            "delete": {
-                "summary": "Supprimer une promotion",
-                "operationId": "deletePromotion",
-                "tags": ["Promotion"],
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Promotion supprimée avec succès"
-                    },
-                    "404": {
-                        "description": "Promotion non trouvée"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/v1/promotions/{id}/referentiels": {
-            "patch": {
-                "summary": "Mettre à jour les référentiels d'une promotion",
-                "operationId": "updatePromotionReferentiels",
-                "tags": ["Promotion"],
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "add": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "object",
-                                            "properties": {
-                                                "id": {
-                                                    "type": "string"
-                                                },
-                                                "competences": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "string"
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    },
-                                    "remove": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Référentiels mis à jour avec succès"
-                    },
-                    "400": {
-                        "description": "Données invalides"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/v1/promotions/{id}/etat": {
-            "patch": {
-                "summary": "Mettre à jour l'état d'une promotion",
-                "operationId": "updatePromotionStatus",
-                "tags": ["Promotion"],
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "etat": {
-                                        "type": "string",
-                                        "enum": ["Actif", "Inactif"]
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Statut de la promotion mis à jour avec succès"
-                    },
-                    "400": {
-                        "description": "Données invalides"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/v1/promotions": {
-            "get": {
-                "summary": "Obtenir la liste des promotions",
-                "operationId": "getPromotionsV1",
-                "tags": ["Promotion"],
-                "responses": {
-                    "200": {
-                        "description": "Liste des promotions",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Promotion"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/v1/promotions/encour": {
-            "get": {
-                "summary": "Obtenir la promotion active",
-                "operationId": "getPromotionActive",
-                "tags": ["Promotion"],
-                "responses": {
-                    "200": {
-                        "description": "Promotion active",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Promotion"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Aucune promotion active"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/referentiels": {
-            "get": {
-                "summary": "Obtenir la liste des référentiels",
-                "operationId": "getReferentiels",
-                "tags": ["Referentiel"],
-                "responses": {
-                    "200": {
-                        "description": "Liste des référentiels",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Referentiel"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            },
-            "post": {
-                "summary": "Créer un nouveau référentiel",
-                "operationId": "createReferentiel",
-                "tags": ["Referentiel"],
-                "requestBody": {
-                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
@@ -1151,31 +614,30 @@
                                             }
                                         }
                                     }
-                                }
+                                },
+                                "required": ["code", "libelle", "description", "photo_couverture"]
                             }
                         }
                     }
                 },
                 "responses": {
                     "201": {
-                        "description": "Référentiel créé avec succès"
+                        "description": "Referentiel created successfully"
                     },
                     "400": {
-                        "description": "Données invalides"
+                        "description": "Validation error"
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             }
         },
         "/api/referentiels/{id}": {
             "get": {
-                "summary": "Obtenir les informations d'un référentiel",
-                "operationId": "getReferentiel",
-                "tags": ["Referentiel"],
+                "summary": "Get a referentiel by ID",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "id",
@@ -1188,29 +650,27 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Informations du référentiel",
+                        "description": "Successful response",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Referentiel"
+                                    "type": "object"
                                 }
                             }
                         }
                     },
                     "404": {
-                        "description": "Référentiel non trouvé"
+                        "description": "Referentiel not found"
                     }
-                },
+                }
+            },
+            "put": {
+                "summary": "Update a referentiel",
                 "security": [
                     {
                         "bearerAuth": []
                     }
-                ]
-            },
-            "put": {
-                "summary": "Mettre à jour un référentiel",
-                "operationId": "updateReferentiel",
-                "tags": ["Referentiel"],
+                ],
                 "parameters": [
                     {
                         "name": "id",
@@ -1222,7 +682,6 @@
                     }
                 ],
                 "requestBody": {
-                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
@@ -1288,52 +747,20 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Référentiel mis à jour avec succès"
+                        "description": "Referentiel updated successfully"
                     },
                     "400": {
-                        "description": "Données invalides"
+                        "description": "Validation error"
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             },
             "delete": {
-                "summary": "Supprimer un référentiel",
-                "operationId": "deleteReferentiel",
-                "tags": ["Referentiel"],
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Référentiel supprimé avec succès"
-                    },
-                    "404": {
-                        "description": "Référentiel non trouvé"
-                    }
-                },
+                "summary": "Delete a referentiel",
                 "security": [
                     {
                         "bearerAuth": []
                     }
-                ]
-            }
-        },
-        "/referentiels/{id}/modules": {
-            "get": {
-                "summary": "Obtenir les modules d'un référentiel",
-                "operationId": "getReferentielModules",
-                "tags": ["Referentiel"],
+                ],
                 "parameters": [
                     {
                         "name": "id",
@@ -1346,42 +773,60 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Liste des modules du référentiel",
+                        "description": "Referentiel deleted successfully"
+                    },
+                    "404": {
+                        "description": "Referentiel not found"
+                    }
+                }
+            }
+        },
+        "/api/referentiels/{id}/modules": {
+            "get": {
+                "summary": "Get modules of a referentiel",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "type": "object",
-                                        "properties": {
-                                            "nom": {
-                                                "type": "string"
-                                            },
-                                            "description": {
-                                                "type": "string"
-                                            }
-                                        }
+                                        "type": "object"
                                     }
                                 }
                             }
                         }
                     },
                     "404": {
-                        "description": "Référentiel non trouvé"
+                        "description": "Referentiel not found"
                     }
-                },
+                }
+            }
+        },
+        "/api/referentiels/{id}/competences": {
+            "post": {
+                "summary": "Add a competence to a referentiel",
                 "security": [
                     {
                         "bearerAuth": []
                     }
-                ]
-            }
-        },
-        "/referentiels/{id}/competences": {
-            "post": {
-                "summary": "Ajouter une compétence à un référentiel",
-                "operationId": "addReferentielCompetence",
-                "tags": ["Referentiel"],
+                ],
                 "parameters": [
                     {
                         "name": "id",
@@ -1393,7 +838,6 @@
                     }
                 ],
                 "requestBody": {
-                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
@@ -1425,31 +869,30 @@
                                             }
                                         }
                                     }
-                                }
+                                },
+                                "required": ["nom", "duree_acquisition", "description", "type"]
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "Compétence ajoutée avec succès"
+                        "description": "Competence added successfully"
                     },
                     "400": {
-                        "description": "Données invalides"
+                        "description": "Validation error"
                     }
-                },
+                }
+            }
+        },
+        "/api/referentiels/{referentielId}/competences/{competenceNom}/modules": {
+            "post": {
+                "summary": "Add a module to a competence",
                 "security": [
                     {
                         "bearerAuth": []
                     }
-                ]
-            }
-        },
-        "/referentiels/{referentielId}/competences/{competenceNom}/modules": {
-            "post": {
-                "summary": "Ajouter un module à une compétence d'un référentiel",
-                "operationId": "addReferentielCompetenceModule",
-                "tags": ["Referentiel"],
+                ],
                 "parameters": [
                     {
                         "name": "referentielId",
@@ -1469,7 +912,6 @@
                     }
                 ],
                 "requestBody": {
-                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
@@ -1481,31 +923,181 @@
                                     "description": {
                                         "type": "string"
                                     }
-                                }
+                                },
+                                "required": ["nom", "description"]
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "Module ajouté avec succès"
+                        "description": "Module added successfully"
                     },
                     "400": {
-                        "description": "Données invalides"
+                        "description": "Validation error"
                     }
-                },
+                }
+            }
+        },
+        "/api/archive/referentiels": {
+            "get": {
+                "summary": "Get archived referentiels",
                 "security": [
                     {
                         "bearerAuth": []
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
-        "/referentiels/{id}": {
+        "/api/promotions": {
+            "get": {
+                "summary": "Get all promotions",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a new promotion",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "libelle": {
+                                        "type": "string"
+                                    },
+                                    "dateDebut": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "dateFin": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "duree": {
+                                        "type": "integer"
+                                    },
+                                    "photo_couverture": {
+                                        "type": "string"
+                                    },
+                                    "referentiels": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "competences": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "apprenants": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "required": ["libelle", "dateDebut"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Promotion created successfully"
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/promotions/{id}": {
+            "get": {
+                "summary": "Get a promotion by ID",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Promotion not found"
+                    }
+                }
+            },
             "patch": {
-                "summary": "Mettre à jour le statut d'un référentiel",
-                "operationId": "updateReferentielStatus",
-                "tags": ["Referentiel"],
+                "summary": "Update a promotion",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "id",
@@ -1517,15 +1109,50 @@
                     }
                 ],
                 "requestBody": {
-                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "type": "object",
                                 "properties": {
-                                    "statut": {
+                                    "libelle": {
+                                        "type": "string"
+                                    },
+                                    "dateDebut": {
                                         "type": "string",
-                                        "enum": ["Actif", "Inactif", "Archiver"]
+                                        "format": "date"
+                                    },
+                                    "dateFin": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "duree": {
+                                        "type": "integer"
+                                    },
+                                    "photo_couverture": {
+                                        "type": "string"
+                                    },
+                                    "referentiels": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "competences": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "apprenants": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
                                     }
                                 }
                             }
@@ -1534,44 +1161,191 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Statut du référentiel mis à jour avec succès"
+                        "description": "Promotion updated successfully"
                     },
                     "400": {
-                        "description": "Données invalides"
+                        "description": "Validation error"
                     }
-                },
+                }
+            },
+            "delete": {
+                "summary": "Delete a promotion",
                 "security": [
                     {
                         "bearerAuth": []
                     }
-                ]
-            }
-        },
-        "/archive/referentiels": {
-            "get": {
-                "summary": "Obtenir la liste des référentiels archivés",
-                "operationId": "getArchivedReferentiels",
-                "tags": ["Referentiel"],
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Liste des référentiels archivés",
+                        "description": "Promotion deleted successfully"
+                    },
+                    "404": {
+                        "description": "Promotion not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/promotions/{id}/referentiels": {
+            "patch": {
+                "summary": "Update referentiels of a promotion",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "add": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "competences": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "remove": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Referentiels updated successfully"
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/promotions/{id}/etat": {
+            "patch": {
+                "summary": "Update the status of a promotion",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "etat": {
+                                        "type": "string",
+                                        "enum": ["Actif", "Inactif"]
+                                    }
+                                },
+                                "required": ["etat"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Promotion status updated successfully"
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/promotions": {
+            "get": {
+                "summary": "Get all promotions",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Referentiel"
+                                        "type": "object"
                                     }
                                 }
                             }
                         }
                     }
-                },
+                }
+            }
+        },
+        "/api/v1/promotions/encour": {
+            "get": {
+                "summary": "Get active promotion",
                 "security": [
                     {
                         "bearerAuth": []
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
