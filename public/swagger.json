@@ -5,6 +5,20 @@
         "version": "1.0.0",
         "description": "API pour gérer les dettes des clients dans un magasin"
     },
+    "components": {
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    },
+    "security": [
+        {
+            "BearerAuth": []
+        }
+    ],
     "paths": {
         "/api/user": {
             "post": {
@@ -181,6 +195,11 @@
             "post": {
                 "summary": "Déconnexion de l'utilisateur",
                 "description": "Cette route permet à un utilisateur de se déconnecter.",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Déconnexion réussie",
@@ -219,6 +238,11 @@
             "post": {
                 "summary": "Changer le mot de passe de l'utilisateur",
                 "description": "Cette route permet à un utilisateur de changer son mot de passe en fournissant son email, son mot de passe actuel et son nouveau mot de passe.",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -319,6 +343,11 @@
                         "description": "ID de l'utilisateur à mettre à jour"
                     }
                 ],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -415,6 +444,11 @@
                         "description": "Rôle des utilisateurs à récupérer"
                     }
                 ],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Liste des utilisateurs récupérée avec succès",
@@ -470,6 +504,11 @@
             "post": {
                 "summary": "Créer un nouvel apprenant",
                 "description": "Cette route permet de créer un nouvel apprenant avec les informations fournies.",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
