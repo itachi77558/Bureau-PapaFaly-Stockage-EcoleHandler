@@ -70,7 +70,7 @@ Route::middleware([config('app.auth_mode') === 'firebase' ? 'auth.firebase' : 'a
 
     
     Route::post('/v1/apprenants/import', [UserController::class, 'importApprenants']);
-    Route::get('/apprenants', [PromotionController::class, 'getApprenantsFromActivePromotion']);
+    Route::get('/v1/apprenants', [PromotionController::class, 'getApprenantsFromActivePromotion']);
 
     
     
