@@ -175,6 +175,8 @@ class UserService
             'email' => $localUser->email,
             'role' => $localUser->role,
             'image_url' => $localUser->image_url ?? null,
+            'statut' => $localUser->statut
+
         ],
         'nom_tuteur' => $data['nom_tuteur'],
         'prenom_tuteur' => $data['prenom_tuteur'],
