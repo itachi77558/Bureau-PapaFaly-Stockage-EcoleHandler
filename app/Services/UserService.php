@@ -176,6 +176,7 @@ class UserService
             'role' => $localUser->role,
             'image_url' => $localUser->image_url ?? null,
             'statut' => $localUser->statut
+
         ],
         'nom_tuteur' => $data['nom_tuteur'],
         'prenom_tuteur' => $data['prenom_tuteur'],
@@ -198,7 +199,6 @@ class UserService
         'firebase_uid' => $firebaseUser->uid
     ];
 }
-
 
 
 
