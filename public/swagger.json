@@ -425,7 +425,7 @@
                 ]
             }
         },
-        "/apprenants": {
+        "/api/apprenants": {
             "post": {
                 "summary": "Créer un nouvel apprenant",
                 "operationId": "createApprenant",
