@@ -433,7 +433,7 @@
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "type": "object",
                                 "properties": {
@@ -594,7 +594,7 @@
                 ]
             }
         },
-        "/v1/apprenants/inactive": {
+        "/api/v1/apprenants/inactive": {
             "get": {
                 "summary": "Obtenir les apprenants inactifs de la promotion active",
                 "operationId": "getInactiveApprenantsFromActivePromotion",
@@ -621,7 +621,7 @@
                 ]
             }
         },
-        "/apprenants/filter-by-referentiel/{referentielId}": {
+        "/api/apprenants/filter-by-referentiel/{referentielId}": {
             "get": {
                 "summary": "Filtrer les apprenants par référentiel",
                 "operationId": "filterApprenantsByReferentiel",
@@ -661,7 +661,7 @@
                 ]
             }
         },
-        "/promotions": {
+        "/api/v1/promotions": {
             "get": {
                 "summary": "Obtenir la liste des promotions",
                 "operationId": "getPromotions",
@@ -758,7 +758,7 @@
                 ]
             }
         },
-        "/promotions/{id}": {
+        "/api/promotions/{id}": {
             "get": {
                 "summary": "Obtenir les informations d'une promotion",
                 "operationId": "getPromotion",
