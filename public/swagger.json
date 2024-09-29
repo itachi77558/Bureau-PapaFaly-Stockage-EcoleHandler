@@ -5,8 +5,9 @@
         "version": "1.0.0",
         "description": "API pour gérer les dettes des clients dans un magasin"
     },
-    "components": {
-        "securitySchemes": {
+    "components":{
+        "securitySchemes":{
+        
             "bearerAuth": {
                 "type": "http",
                 "scheme": "bearer",
@@ -14,11 +15,9 @@
             }
         }
     },
-    "security": [
-        {
-            "bearerAuth": []
-        }
-    ],
+    "security":{
+          "bearerAuth": []
+    },
     "paths": {
         "/api/user": {
             "post": {
