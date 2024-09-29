@@ -428,7 +428,7 @@
                 }
             }
         },
-        "/users": {
+        "/api/users": {
             "get": {
                 "summary": "Récupérer la liste des utilisateurs",
                 "description": "Cette route permet de récupérer la liste des utilisateurs en fonction de leur rôle.",
@@ -500,7 +500,7 @@
                 }
             }
         },
-        "/apprenants": {
+        "/api/apprenants": {
             "post": {
                 "summary": "Créer un nouvel apprenant",
                 "description": "Cette route permet de créer un nouvel apprenant avec les informations fournies.",
