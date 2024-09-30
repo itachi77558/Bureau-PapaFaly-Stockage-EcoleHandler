@@ -19,10 +19,9 @@ RUN apt-get update && apt-get install -y \
 
 # Installation des extensions PHP requises  
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
-&& docker-php-ext-install pdo_mysql pdo_pgsql gd mbstring zip xml  # Ajout de pdo_pgsql pour PostgreSQL \
-&& docker-php-ext-install pdo_mysql pdo_pgsql gd mbstring zip xml imagick  # Ajout de imagick
+&& docker-php-ext-install pdo_mysql pdo_pgsql gd mbstring zip xml  # Ajout de pdo_pgsql pour PostgreSQL
 
-# Installation de Composer     
+# Installation de Composer   
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Définir le répertoire de travail

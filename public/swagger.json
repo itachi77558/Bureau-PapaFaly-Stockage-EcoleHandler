@@ -14,6 +14,28 @@
             }
         }
     },
+    "tags": [
+        {
+            "name": "User",
+            "description": "Operations related to users"
+        },
+        {
+            "name": "Auth",
+            "description": "Operations related to authentication"
+        },
+        {
+            "name": "Apprenant",
+            "description": "Operations related to apprenants"
+        },
+        {
+            "name": "Referentiel",
+            "description": "Operations related to referentiels"
+        },
+        {
+            "name": "Promotion",
+            "description": "Operations related to promotions"
+        }
+    ],
     "paths": {
         "/api/user": {
             "get": {
@@ -23,6 +45,7 @@
                         "bearerAuth": []
                     }
                 ],
+                "tags": ["User"],
                 "responses": {
                     "200": {
                         "description": "Successful response",
@@ -43,6 +66,7 @@
             },
             "post": {
                 "summary": "Create a new user",
+                "tags": ["User"],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -89,6 +113,7 @@
         "/api/login": {
             "post": {
                 "summary": "Login a user",
+                "tags": ["Auth"],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -139,6 +164,7 @@
         "/api/logout": {
             "post": {
                 "summary": "Logout a user",
+                "tags": ["Auth"],
                 "security": [
                     {
                         "bearerAuth": []
@@ -154,6 +180,7 @@
         "/api/change-password": {
             "post": {
                 "summary": "Change user password",
+                "tags": ["User"],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -192,6 +219,7 @@
         "/api/users/{id}": {
             "patch": {
                 "summary": "Update a user",
+                "tags": ["User"],
                 "security": [
                     {
                         "bearerAuth": []
@@ -252,6 +280,7 @@
         "/api/v1/users": {
             "get": {
                 "summary": "Get all users",
+                "tags": ["User"],
                 "security": [
                     {
                         "bearerAuth": []
@@ -294,96 +323,98 @@
             }
         },
         "/api/apprenants": {
-    "post": {
-        "summary": "Create a new apprenant",
-        "security": [
-            {
-                "bearerAuth": []
-            }
-        ],
-        "requestBody": {
-            "content": {
-                "multipart/form-data": {
-                    "schema": {
-                        "type": "object",
-                        "properties": {
-                            "prenom": {
-                                "type": "string"
-                            },
-                            "nom": {
-                                "type": "string"
-                            },
-                            "email": {
-                                "type": "string",
-                                "format": "email"
-                            },
-                            "image": {
-                                "type": "string",
-                                "format": "binary"
-                            },
-                            "password": {
-                                "type": "string"
-                            },
-                            "password_confirmation": {
-                                "type": "string"
-                            },
-                            "nom_tuteur": {
-                                "type": "string"
-                            },
-                            "prenom_tuteur": {
-                                "type": "string"
-                            },
-                            "photocopie_cni": {
-                                "type": "string",
-                                "format": "binary"
-                            },
-                            "diplome": {
-                                "type": "string",
-                                "format": "binary"
-                            },
-                            "contact_tuteur": {
-                                "type": "string"
-                            },
-                            "extrait_naissance": {
-                                "type": "string",
-                                "format": "binary"
-                            },
-                            "casier_judiciaire": {
-                                "type": "string",
-                                "format": "binary"
+            "post": {
+                "summary": "Create a new apprenant",
+                "tags": ["Apprenant"],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "prenom": {
+                                        "type": "string"
+                                    },
+                                    "nom": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string"
+                                    },
+                                    "nom_tuteur": {
+                                        "type": "string"
+                                    },
+                                    "prenom_tuteur": {
+                                        "type": "string"
+                                    },
+                                    "photocopie_cni": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "diplome": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "contact_tuteur": {
+                                        "type": "string"
+                                    },
+                                    "extrait_naissance": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "casier_judiciaire": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "required": [
+                                    "prenom",
+                                    "nom",
+                                    "email",
+                                    "password",
+                                    "password_confirmation",
+                                    "nom_tuteur",
+                                    "prenom_tuteur",
+                                    "photocopie_cni",
+                                    "diplome",
+                                    "contact_tuteur",
+                                    "extrait_naissance",
+                                    "casier_judiciaire"
+                                ]
                             }
-                        },
-                        "required": [
-                            "prenom",
-                            "nom",
-                            "email",
-                            "password",
-                            "password_confirmation",
-                            "nom_tuteur",
-                            "prenom_tuteur",
-                            "photocopie_cni",
-                            "diplome",
-                            "contact_tuteur",
-                            "extrait_naissance",
-                            "casier_judiciaire"
-                        ]
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Apprenant created successfully"
+                    },
+                    "400": {
+                        "description": "Validation error"
                     }
                 }
             }
         },
-        "responses": {
-            "201": {
-                "description": "Apprenant created successfully"
-            },
-            "400": {
-                "description": "Validation error"
-            }
-        }
-    }
-},
         "/api/v1/apprenants/import": {
             "post": {
                 "summary": "Import apprenants from an Excel file",
+                "tags": ["Apprenant"],
                 "security": [
                     {
                         "bearerAuth": []
@@ -418,6 +449,7 @@
         "/api/v1/apprenants": {
             "get": {
                 "summary": "Get apprenants from active promotion",
+                "tags": ["Apprenant"],
                 "security": [
                     {
                         "bearerAuth": []
@@ -443,6 +475,7 @@
         "/api/v1/apprenants/{id}": {
             "get": {
                 "summary": "Get an apprenant by ID",
+                "tags": ["Apprenant"],
                 "security": [
                     {
                         "bearerAuth": []
@@ -478,6 +511,7 @@
         "/api/v1/apprenants/inactive": {
             "get": {
                 "summary": "Get inactive apprenants from active promotion",
+                "tags": ["Apprenant"],
                 "security": [
                     {
                         "bearerAuth": []
@@ -503,6 +537,7 @@
         "/api/apprenants/filter-by-referentiel/{referentielId}": {
             "get": {
                 "summary": "Filter apprenants by referentiel",
+                "tags": ["Apprenant"],
                 "security": [
                     {
                         "bearerAuth": []
@@ -538,6 +573,7 @@
         "/api/referentiels": {
             "get": {
                 "summary": "Get all referentiels",
+                "tags": ["Referentiel"],
                 "security": [
                     {
                         "bearerAuth": []
@@ -561,6 +597,7 @@
             },
             "post": {
                 "summary": "Create a new referentiel",
+                "tags": ["Referentiel"],
                 "security": [
                     {
                         "bearerAuth": []
@@ -637,6 +674,7 @@
         "/api/referentiels/{id}": {
             "get": {
                 "summary": "Get a referentiel by ID",
+                "tags": ["Referentiel"],
                 "security": [
                     {
                         "bearerAuth": []
@@ -670,6 +708,7 @@
             },
             "put": {
                 "summary": "Update a referentiel",
+                "tags": ["Referentiel"],
                 "security": [
                     {
                         "bearerAuth": []
@@ -760,6 +799,7 @@
             },
             "delete": {
                 "summary": "Delete a referentiel",
+                "tags": ["Referentiel"],
                 "security": [
                     {
                         "bearerAuth": []
@@ -788,6 +828,7 @@
         "/api/referentiels/{id}/modules": {
             "get": {
                 "summary": "Get modules of a referentiel",
+                "tags": ["Referentiel"],
                 "security": [
                     {
                         "bearerAuth": []
@@ -826,6 +867,7 @@
         "/api/referentiels/{id}/competences": {
             "post": {
                 "summary": "Add a competence to a referentiel",
+                "tags": ["Referentiel"],
                 "security": [
                     {
                         "bearerAuth": []
@@ -892,6 +934,7 @@
         "/api/referentiels/{referentielId}/competences/{competenceNom}/modules": {
             "post": {
                 "summary": "Add a module to a competence",
+                "tags": ["Referentiel"],
                 "security": [
                     {
                         "bearerAuth": []
@@ -946,6 +989,7 @@
         "/api/archive/referentiels": {
             "get": {
                 "summary": "Get archived referentiels",
+                "tags": ["Referentiel"],
                 "security": [
                     {
                         "bearerAuth": []
@@ -971,6 +1015,7 @@
         "/api/promotions": {
             "get": {
                 "summary": "Get all promotions",
+                "tags": ["Promotion"],
                 "security": [
                     {
                         "bearerAuth": []
@@ -994,6 +1039,7 @@
             },
             "post": {
                 "summary": "Create a new promotion",
+                "tags": ["Promotion"],
                 "security": [
                     {
                         "bearerAuth": []
@@ -1064,6 +1110,7 @@
         "/api/promotions/{id}": {
             "get": {
                 "summary": "Get a promotion by ID",
+                "tags": ["Promotion"],
                 "security": [
                     {
                         "bearerAuth": []
@@ -1097,6 +1144,7 @@
             },
             "patch": {
                 "summary": "Update a promotion",
+                "tags": ["Promotion"],
                 "security": [
                     {
                         "bearerAuth": []
@@ -1174,6 +1222,7 @@
             },
             "delete": {
                 "summary": "Delete a promotion",
+                "tags": ["Promotion"],
                 "security": [
                     {
                         "bearerAuth": []
@@ -1202,6 +1251,7 @@
         "/api/v1/promotions/{id}/referentiels": {
             "patch": {
                 "summary": "Update referentiels of a promotion",
+                "tags": ["Promotion"],
                 "security": [
                     {
                         "bearerAuth": []
@@ -1264,6 +1314,7 @@
         "/api/v1/promotions/{id}/etat": {
             "patch": {
                 "summary": "Update the status of a promotion",
+                "tags": ["Promotion"],
                 "security": [
                     {
                         "bearerAuth": []
@@ -1308,6 +1359,7 @@
         "/api/v1/promotions": {
             "get": {
                 "summary": "Get all promotions",
+                "tags": ["Promotion"],
                 "security": [
                     {
                         "bearerAuth": []
@@ -1333,6 +1385,7 @@
         "/api/v1/promotions/encour": {
             "get": {
                 "summary": "Get active promotion",
+                "tags": ["Promotion"],
                 "security": [
                     {
                         "bearerAuth": []
